@@ -55,7 +55,7 @@ function prikaz(sneakers){
         const naziv = document.createElement("p");
         naziv.innerText = sneaker.name;
         const cena = document.createElement("p");
-        cena.innerText = sneaker.price;
+        cena.innerText = (sneaker.price/1000).toFixed(3);
         kartica.classList.add("kartica");
         kartica.classList.add("col-3");
         slika.classList.add("patika-slika");
