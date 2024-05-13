@@ -22,6 +22,8 @@
 .navbar{
     background-color: #0042C7;
     height: 100px;
+    margin-bottom: 20px;
+    padding: 10px;
 }
 .nav-link{
     color: #E1E1DD;
