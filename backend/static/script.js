@@ -1,16 +1,34 @@
-document.addEventListener("DOMContentLoaded", function(){
-    prikaz(sneakers);
+document.addEventListener('DOMContentLoaded', function () {
+    let sneakers = []
+    function fetchSneakers() {
+        fetch('/sneakers')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                sneakers = data
+                prikaz(sneakers);
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+            });
+    }
+    fetchSneakers();
+
     const def = document.getElementById("default");
     def.addEventListener("click", function(){
         prikaz(sneakers);
     })
     const filterButton = document.getElementById("filter-button");
     filterButton.addEventListener("click", function(){
-        applyFilters();
+        applyFilters(sneakers);
     })
     const clearFiltersButton = document.getElementById("clear-filters-button");
     clearFiltersButton.addEventListener("click", function() {
-        clearFilterCheckboxes("filters");
+        clearFilterCheckboxes("filters", sneakers);
     });
     const searchInput = document.querySelector('input[type="search"]');
     searchInput.addEventListener("input", function(event){
@@ -20,29 +38,28 @@ document.addEventListener("DOMContentLoaded", function(){
     })
     const rastucaCena = document.getElementById("cenaRastuce");
     rastucaCena.addEventListener("click", function() {
-        const filteredSneakers = applyFilters();
+        const filteredSneakers = applyFilters(sneakers);
         sortPriceLowToHigh(filteredSneakers);
     });
 
     const opadajucaCena = document.getElementById("cenaOpadajuce");
     opadajucaCena.addEventListener("click", function() {
-        const filteredSneakers = applyFilters();
+        const filteredSneakers = applyFilters(sneakers);
         sortPriceHighToLow(filteredSneakers);
     });
 
     const starije = document.getElementById("modelStariji");
     starije.addEventListener("click", function() {
-        const filteredSneakers = applyFilters();
+        const filteredSneakers = applyFilters(sneakers);
         sortOldest(filteredSneakers);
     });
 
     const novije = document.getElementById("modelNoviji");
     novije.addEventListener("click", function() {
-        const filteredSneakers = applyFilters();
+        const filteredSneakers = applyFilters(sneakers);
         sortNewest(filteredSneakers);
     });
 });
-
 function prikaz(sneakers){
     const sContainer=document.getElementById("sneaker-container");
     sContainer.innerHTML="";
@@ -96,7 +113,7 @@ function applyFilters(filteredSneakers = sneakers){
     return filteredResults;
 }
 
-function clearFilterCheckboxes(filterSectionId) {
+function clearFilterCheckboxes(filterSectionId, sneakers) {
     var filterSection = document.getElementById(filterSectionId);
     if (filterSection) {
         var checkboxes = filterSection.querySelectorAll('input[type="checkbox"]');
