@@ -11,12 +11,9 @@ def index():
 def get_sneakers():
     conn = sqlite3.connect('schema.db') 
     cursor = conn.cursor()
-
     cursor.execute("SELECT * FROM sneakers")
     sneakers = cursor.fetchall()
-
     conn.close()
-
     sneaker_data = []
     for sneaker in sneakers:
         sneaker_dict = {
@@ -30,8 +27,9 @@ def get_sneakers():
             'gender': sneaker[7]
         }
         sneaker_data.append(sneaker_dict)
-
     return jsonify(sneaker_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+

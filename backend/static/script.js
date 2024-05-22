@@ -65,8 +65,6 @@ function prikaz(sneakers){
     sContainer.innerHTML="";
     sneakers.forEach(sneaker =>{
         const kartica = document.createElement("div");
-        kartica.dataset.gender = sneaker.gender === "Male" ? "male" : sneaker.gender === "Female" ? "female" : "kids";
-        kartica.dataset.sneakerId = sneaker.id;
         const slika = document.createElement("img");
         slika.setAttribute("src", sneaker.imageURL);
         const naziv = document.createElement("p");
@@ -94,7 +92,8 @@ function applyFilters(filteredSneakers = sneakers){
     const checkedColors = [...document.querySelectorAll('.color-checkbox')].filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
     const filteredResults = filteredSneakers.filter(sneaker => {
         return (
-            (!checkedGender.length || checkedGender.includes(sneaker.gender) || (sneaker.gender === "Unisex" && (checkedGender.includes("Male") || checkedGender.includes("Female")))) && 
+            (!checkedGender.length || checkedGender.includes(sneaker.gender) 
+            || (sneaker.gender === "Unisex" && (checkedGender.includes("Male") || checkedGender.includes("Female")))) && 
             (!checkedBrands.length || checkedBrands.includes(sneaker.brand)) &&
             (!checkedPrices.length || checkedPrices.some(range => {
                 const [min, max] = range.split('-').map(parseFloat);
@@ -109,18 +108,15 @@ function applyFilters(filteredSneakers = sneakers){
     if (filteredResults.length === 0) {
         return [];
     }
-
     return filteredResults;
 }
 
 function clearFilterCheckboxes(filterSectionId, sneakers) {
     var filterSection = document.getElementById(filterSectionId);
-    if (filterSection) {
-        var checkboxes = filterSection.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(function(checkbox) {
-            checkbox.checked = false;
+    var checkboxes = filterSection.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+    checkbox.checked = false;
         });
-    }
     prikaz(sneakers);
 }
 
